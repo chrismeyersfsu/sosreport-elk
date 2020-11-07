@@ -6,17 +6,11 @@ processors:
 - grok:
     field: message
     patterns:
-    - '%{TIMESTAMP_ISO8601:tower.tower.timestamp}%{SPACE}%{NOTSPACE:tower.tower.level}%{SPACE}%{NOTSPACE:tower.tower.logger}%{SPACE}%{GREEDYMULTILINE:tower.tower.message}'
+    - '%{TIMESTAMP_ISO8601:tower.tower.timestamp}%{SPACE}%{NOTSPACE:tower.tower.level}%{SPACE}%{NOTSPACE:tower.tower.logger}%{SPACE}%{GREEDYMULTILINE:message}'
     pattern_definitions:
       GREEDYMULTILINE: |-
         (.|
         )*
-    ignore_missing: true
-- remove:
-    field: message
-- rename:
-    field: tower.tower.message
-    target_field: message
     ignore_missing: true
 - date:
     if: ctx.event.timezone == null

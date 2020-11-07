@@ -177,3 +177,20 @@
 2020-10-28 19:01:21,427 WARNING  awx.main.dispatch job 464 (failed) encountered an error (rc=1), please see task stdout for details.
 2020-10-28 19:04:56,380 WARNING  awx.main.managers Detected job 477 (running) running inside lost instance, may still be waiting for reaper.
 2020-10-28 19:05:16,352 WARNING  awx.main.managers Detected job 477 (running) running inside lost instance, may still be waiting for reaper.
+2020-11-04 07:28:19,360 ERROR    awx.main.commands.run_callback_receiver encountered an error communicating with redis
+Traceback (most recent call last):
+  File "/var/lib/awx/venv/awx/lib64/python3.6/site-packages/awx/main/dispatch/worker/callback.py", line 55, in read
+    res = self.redis.blpop(settings.CALLBACK_QUEUE, timeout=settings.JOB_EVENT_BUFFER_SECONDS)
+  File "/var/lib/awx/venv/awx/lib64/python3.6/site-packages/redis/client.py", line 1865, in blpop
+    return self.execute_command('BLPOP', *keys)
+  File "/var/lib/awx/venv/awx/lib64/python3.6/site-packages/redis/client.py", line 878, in execute_command
+    return self.parse_response(conn, command_name, **options)
+  File "/var/lib/awx/venv/awx/lib64/python3.6/site-packages/redis/client.py", line 892, in parse_response
+    response = connection.read_response()
+  File "/var/lib/awx/venv/awx/lib64/python3.6/site-packages/redis/connection.py", line 734, in read_response
+    response = self._parser.read_response()
+  File "/var/lib/awx/venv/awx/lib64/python3.6/site-packages/redis/connection.py", line 463, in read_response
+    self.read_from_socket()
+  File "/var/lib/awx/venv/awx/lib64/python3.6/site-packages/redis/connection.py", line 422, in read_from_socket
+    raise ConnectionError(SERVER_CLOSED_CONNECTION_ERROR)
+redis.exceptions.ConnectionError: Connection closed by server.
