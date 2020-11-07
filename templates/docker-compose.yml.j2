@@ -1,0 +1,20 @@
+version: "3"
+services:
+  elk:
+    image: sebp/elk
+    ports:
+      - "5601:5601"
+      - "9200:9200"
+      - "5044:5044"
+
+  filebeat:
+    image: docker.elastic.co/beats/filebeat-oss:7.9.3
+    entrypoint: /filebeat.sh
+    volumes:
+      - "./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
+      - "./filebeat.sh:/filebeat.sh"
+      - "./modules.d:/usr/share/filebeat/modules.d"
+      - "{{ sosreports_dir }}:/thelogs"
+    labels:
+      - "co.elastic.logs/module=nginx"
+      - "co.elastic.logs/module=system"

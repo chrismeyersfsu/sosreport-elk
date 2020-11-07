@@ -1,0 +1,32 @@
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: "check vars"
+      fail:
+        msg: "sosreports_dir is not defined"
+      when: sosreports_dir is not defined
+
+    - name: "Template docker compose"
+      template:
+        src: "docker-compose.yml.j2"
+        dest: "docker-compose.yml"
+        mode: '644'
+
+    - name: "Find sos reports"
+      set_fact:
+        sosreport_paths: "{{ lookup('find_sosreports', sosreports_dir, wantlist=True) }}"
+
+    - name: "Set nginx access.log and error.log paths"
+      set_fact:
+        nginx_access_paths: "{{ sosreport_paths|map('string_postfix', '/thelogs/')|map('string_prefix', '/var/log/nginx/access.log')|list }}"
+        nginx_error_paths: "{{ sosreport_paths|map('string_postfix', '/thelogs/')|map('string_prefix', '/var/log/nginx/error.log')|list }}"
+
+    - name: "Template filebeat modules"
+      template:
+        src: "{{ item.src }}"
+        dest: "modules.d/{{ item.dest }}"
+        mode: '644'
+      with_items:
+        - src: "nginx.yml.j2"
+          dest: "nginx.yml"
+
