@@ -5,17 +5,12 @@ paths:
 {{ end }}
 exclude_files: [".gz$"]
 multiline:
-  pattern: "^\\s"
+  pattern: '^\d\d\d\d-\d\d-\d\d'
   match: after
+  negate: true
 
 fields:
 {{ range $k, $v := .fields }}
  tower.tower.{{$k}}: {{$v}}
 {{ end }}
 fields_under_root: true
-processors:
-  - add_locale: ~
-  - add_fields:
-      target: ''
-      fields:
-        ecs.version: 1.6.0
