@@ -7,6 +7,12 @@ exclude_files: [".gz$"]
 multiline:
   pattern: "^\\s"
   match: after
+
+fields:
+{{ range $k, $v := .fields }}
+ tower.tower.{{$k}}: {{$v}}
+{{ end }}
+fields_under_root: true
 processors:
   - add_locale: ~
   - add_fields:

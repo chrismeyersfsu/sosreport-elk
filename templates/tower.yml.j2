@@ -1,4 +1,8 @@
+{% for e in sosreports %}
 - module: tower
   tower:
     enabled: true
-    var.paths: {{ tower_tower_paths }}
+    var.paths: ["{{ sosreport_base_dir }}/{{ e.path }}/var/log/tower/*.log"]
+    var.fields:
+      hostname: "{{ e.hostname }}"
+{% endfor %}

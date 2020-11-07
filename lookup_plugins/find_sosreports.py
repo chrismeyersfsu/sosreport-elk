@@ -4,24 +4,24 @@ __metaclass__ = type
 
 DOCUMENTATION = """
         lookup: file
-        author: Daniel Hokka Zakrisson <daniel@hozac.com>
+        author: Chris Meyers <cmeyers@redhat.com>
         version_added: "0.9"
-        short_description: read file contents
+        short_description: find sosreports in dirs
         description:
-            - This lookup returns the contents from a file on the Ansible controller's file system.
+            - This lookup finds any sosreport in the dirs specified. Does not recurse
         options:
           _terms:
-            description: path(s) of files to read
+            description: path(s) of dirs to find sos reports in
             required: True
         notes:
-          - if read in variable context, the file can be interpreted as YAML if the content is valid to the parser.
-          - this lookup does not understand globing --- use the fileglob lookup instead.
+          - None
 """
 from ansible.errors import AnsibleError, AnsibleParserError
 from ansible.plugins.lookup import LookupBase
 from ansible.utils.display import Display
 
 import os
+import re
 
 display = Display()
 
@@ -33,8 +33,18 @@ class LookupModule(LookupBase):
             return True
         return False
 
-    def run(self, terms, variables=None, **kwargs):
+    def get_tower_hostname(self, root, pathname):
+        path = os.path.join(root, pathname, "etc", "tower", "conf.d", "cluster_host_id.py")
+        with open(path) as f:
+            data = f.read()
+        m = re.search("CLUSTER_HOST_ID = '(.*?)'", data)
+        return m.group(1)
 
+    def run(self, terms, variables=None, **kwargs):
+        entry = {
+            'hostname': '',
+            'path': '',
+        }
 
         # lookups in general are expected to both take a list as input and output a list
         # this is done so they work with the looping construct 'with_'.
@@ -47,6 +57,10 @@ class LookupModule(LookupBase):
                     continue
                 if not self.looks_like_sosreport(x):
                     continue
-                ret.append(x)
+                entry = {
+                    'hostname': self.get_tower_hostname(term, x),
+                    'path': x,
+                }
+                ret.append(entry)
 
         return ret

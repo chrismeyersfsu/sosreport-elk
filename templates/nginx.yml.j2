@@ -1,9 +1,9 @@
-# Module: nginx
-# Docs: https://www.elastic.co/guide/en/beats/filebeat/7.9/filebeat-module-nginx.html
+{% for e in sosreports %}
 - module: nginx
   access:
     enabled: true
-    var.paths: {{ nginx_access_paths }}
+    var.paths: ["{{ sosreport_base_dir }}/{{ e.path }}/var/log/nginx/access.log"]
   error:
     enabled: true
-    var.paths: {{ nginx_error_paths }}
+    var.paths: ["{{ sosreport_base_dir }}/{{ e.path }}/var/log/nginx/error.log"]
+{% endfor %}
