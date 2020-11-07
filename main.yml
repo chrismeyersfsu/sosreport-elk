@@ -16,10 +16,12 @@
       set_fact:
         sosreport_paths: "{{ lookup('find_sosreports', sosreports_dir, wantlist=True) }}"
 
-    - name: "Set nginx access.log and error.log paths"
+    - name: "Set filebeat module log file config paths"
       set_fact:
         nginx_access_paths: "{{ sosreport_paths|map('string_postfix', '/thelogs/')|map('string_prefix', '/var/log/nginx/access.log')|list }}"
         nginx_error_paths: "{{ sosreport_paths|map('string_postfix', '/thelogs/')|map('string_prefix', '/var/log/nginx/error.log')|list }}"
+        tower_tower_paths: "{{ sosreport_paths|map('string_postfix', '/thelogs/')|map('string_prefix', '/var/log/tower/*')|list }}"
+        tower_supervisor_paths: "{{ sosreport_paths|map('string_postfix', '/thelogs/')|map('string_prefix', '/var/log/supervisor/*')|list }}"
 
     - name: "Template filebeat modules"
       template:
@@ -29,4 +31,6 @@
       with_items:
         - src: "nginx.yml.j2"
           dest: "nginx.yml"
+        - src: "tower.yml.j2"
+          dest: "tower.yml"
 

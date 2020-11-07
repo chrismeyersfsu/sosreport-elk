@@ -14,6 +14,7 @@ services:
       - "./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
       - "./filebeat.sh:/filebeat.sh"
       - "./modules.d:/usr/share/filebeat/modules.d"
+      - "./module/tower:/usr/share/filebeat/module/tower"
       - "{{ sosreports_dir }}:/thelogs"
     labels:
       - "co.elastic.logs/module=nginx"

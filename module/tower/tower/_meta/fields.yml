@@ -1,0 +1,15 @@
+- name: tower
+  description: Please add description
+  example: Please add example
+  type: group
+  fields:
+  - name: level
+    description: Please add description
+    example: Please add example
+  - name: logger
+    description: Please add description
+    example: Please add example
+  - name: message
+    description: Please add description
+    example: Please add example
+    type: text

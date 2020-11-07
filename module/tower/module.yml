@@ -1,0 +1,5 @@
+dashboards:
+- id: Filebeat-tower-tower-Dashboard
+  file: Filebeat-tower-tower.json
+- id: Filebeat-tower-supervisor-Dashboard
+  file: Filebeat-tower-supervisor.json
