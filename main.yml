@@ -1,5 +1,7 @@
 - hosts: localhost
   gather_facts: false
+  vars:
+    sosreport_base_dir: "/thelogs"
   tasks:
     - name: "check vars"
       fail:
@@ -14,14 +16,7 @@
 
     - name: "Find sos reports"
       set_fact:
-        sosreport_paths: "{{ lookup('find_sosreports', sosreports_dir, wantlist=True) }}"
-
-    - name: "Set filebeat module log file config paths"
-      set_fact:
-        nginx_access_paths: "{{ sosreport_paths|map('string_postfix', '/thelogs/')|map('string_prefix', '/var/log/nginx/access.log')|list }}"
-        nginx_error_paths: "{{ sosreport_paths|map('string_postfix', '/thelogs/')|map('string_prefix', '/var/log/nginx/error.log')|list }}"
-        tower_tower_paths: "{{ sosreport_paths|map('string_postfix', '/thelogs/')|map('string_prefix', '/var/log/tower/*')|list }}"
-        tower_supervisor_paths: "{{ sosreport_paths|map('string_postfix', '/thelogs/')|map('string_prefix', '/var/log/supervisor/*')|list }}"
+        sosreports: "{{ lookup('find_sosreports', sosreports_dir, wantlist=True) }}"
 
     - name: "Template filebeat modules"
       template:
