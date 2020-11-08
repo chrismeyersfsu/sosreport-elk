@@ -1,4 +1,9 @@
-Push NGINX logs into elasticsearch from 1 or many sosreports. Run the `ansible-playbook` command below to generate a `docker-compose.yml` file. Then, `docker-compose up` to bring up an ELK stack and a `filebeat` container that will push the sosreport data into the ELK stack.
+Push SOSReport logs into an ELK stack running locally via docker-compose.
+
+Current log files processed:
+* /var/log/tower/*.log
+* /var/log/nginx/access.log
+* /var/log/nginx/error.log
 
 ```
 ansible-playbook main.yml -v -e sosreports_dir=/home/meyers/Downloads/sos/all_tower_sos_reports
