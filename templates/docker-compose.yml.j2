@@ -16,6 +16,5 @@ services:
       - "./modules.d:/usr/share/filebeat/modules.d"
       - "./module/tower:/usr/share/filebeat/module/tower"
       - "{{ sosreports_dir }}:/thelogs"
-    labels:
-      - "co.elastic.logs/module=nginx"
-      - "co.elastic.logs/module=system"
+    environment:
+      - "strict.perms=false"
