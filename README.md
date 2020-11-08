@@ -5,11 +5,15 @@ Current log files processed:
 * /var/log/nginx/access.log
 * /var/log/nginx/error.log
 
+### Quickstart
+
+* Download and extract an SOSReport
+* Run the below commands to start the ELK stack and ingest the SOSReport
 ```
 ansible-playbook main.yml -v -e sosreports_dir=/home/meyers/Downloads/sos/all_tower_sos_reports
 docker-compose up
 ```
-http://localhost:5601
+* Load Kibana to see the results http://localhost:5601
 
 ### Screenshot
 Below is a view of Kibana Discover after the data has been loaded. The filter
