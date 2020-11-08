@@ -10,3 +10,5 @@ ansible-playbook main.yml -v -e sosreports_dir=/home/meyers/Downloads/sos/all_to
 docker-compose up
 ```
 http://localhost:5601
+
+![Demo Animation](../assets/kibana_nginx_500.png?raw=true)
