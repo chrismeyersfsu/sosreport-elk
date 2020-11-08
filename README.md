@@ -11,7 +11,7 @@ docker-compose up
 ```
 http://localhost:5601
 
-### Example Data
+### Screenshot
 Below is a view of Kibana Discover after the data has been loaded. The filter
 `event.module:tower` has been applied to limit the results to only log entries
 that were processed by the `filebeat` `tower` module.
@@ -19,7 +19,7 @@ that were processed by the `filebeat` `tower` module.
 ![kibana discover tower](../assets/kibana_tower_discover.png?raw=true)
 
 
-### Example Error Trace
+### Use-Case, NGINX 500s
 
 From a failing nightly run in our jenkins server, I downloaded and extracted 
 an SOSReport. I went to the `[Filebeat Nginx] Access and error logs ECS`
