@@ -72,12 +72,10 @@ at all events happening during that time.
 
 ### Debugging
 
-*I don't see any logs in Kibana*
-
+*I don't see any logs in Kibana*</br>
 Check your time window. The default is "Last 15 Minutes". I usually set it to "Last 1 Year"
 
-*I checked my time window and I still don't see logs in Kibana*
-
+*I checked my time window and I still don't see logs in Kibana*</br>
 The `filebeat run` command that sends data to elasticsearch may have failed. Run `docker logs sosreport-elk_filebeat_1` and report the error.
 A "normal" looking successfull log looks like the below.
 
@@ -93,6 +91,5 @@ Loaded machine learning job configurations
 Loaded Ingest pipelines
 ```
 
-*Something went sideways.*
-
+*Something went sideways.*</br>
 Delete the existing ELK stack and start over via `docker-compose up --force-recreate`
