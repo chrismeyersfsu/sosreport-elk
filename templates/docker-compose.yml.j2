@@ -18,4 +18,4 @@ services:
       - "{{ sosreports_dir }}:/thelogs"
     environment:
       - "strict.perms=false"
-    user: "${UID}:${GID}"
+    user: "0:0"
