@@ -22,6 +22,9 @@ processors:
     - append:
         field: error.message
         value: '{{ _ingest.on_failure_message }}'
+    - append:
+        field: error.grok
+        value: true
 - date:
     if: ctx.event.timezone != null
     field: tower.tower.timestamp
