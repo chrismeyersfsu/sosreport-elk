@@ -4,12 +4,14 @@
   type: group
   fields:
   - name: level
-    description: Please add description
-    example: Please add example
+    description: Log level
+    example: DEBUG, INFO, WARN, ERROR
+    type: text
   - name: logger
-    description: Please add description
-    example: Please add example
+    description: Python logger that generated this log entry.
+    example: awx.main.task_manager
+    type: text
   - name: message
-    description: Please add description
-    example: Please add example
+    description: Contents of the log message
+    example: "Started Job 345"
     type: text

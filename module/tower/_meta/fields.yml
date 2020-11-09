@@ -1,9 +1,11 @@
 - key: tower
   title: "tower"
   description: >
-    tower Module
+    Module for parsing Ansible Tower log files.
+  short_config: true
   fields:
     - name: tower
       type: group
       description: >
+        Fields from the tower log files.
       fields:

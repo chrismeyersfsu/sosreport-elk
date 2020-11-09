@@ -23,6 +23,16 @@ that were processed by the `filebeat` `tower` module.
 ![kibana discover tower](../assets/kibana_tower_discover.png?raw=true)
 
 
+### Importing Dashboards
+
+Dashboards that are useful for SOSReport data are saved in `kibana_saved_objects`
+in this repository. To import them into kibana follow the steps below:
+* Open you kibana dashboard at http://localhost:5601
+* Navigate to `Stack Management -> Saved objects`
+* Click import
+* Drag and drop or select the dashboards from the `kibana_saved_objects` directory
+* Click Import
+
 ### Use-Case, NGINX 500s
 
 From a failing nightly run in our jenkins server, I downloaded and extracted 

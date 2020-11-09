@@ -32,5 +32,5 @@ func init() {
 // AssetTower returns asset data.
 // This is the base64 encoded gzipped contents of module/tower.
 func AssetTower() string {
-	return "eJy8kEEOwiAURPecYtJ9L8DCG5h4BSIjIdJCCtX29kaslqY10YUuGR7zH7/GmaNE8ld2Akg2OUpU+VwJQDMeOxuS9a3ETgB4sNh73TsK4GTpdJT5qkarGs51GR8DJUzn+zAlG53LmndVq8cHRxUJpXWZFzQH1YT7jwpyygpqrbhlNDs5XuiK/FurT71e87wxiyX8emDDGJXhHyY+l584JHELAAD//x70uqc="
+	return "eJx8kkFv2kAQhe/+FU8+gy9tLz5Uoi1UiRKInEQ5ogWP1yvWO9buEPC/j2wQGDCZm5/ezPv8tGNsqEkhvCMfAWLEUoq4+44jIKew9qYWwy7F7wgAnjnfWkLBHrXywTiNiQtmZQlv7RosaxTGUkgiIJTsZblmVxidQvyWIqAwZPOQdufGcKqiM0I70tSUQnve1kdlgKOdWXcIhecKUtLhyCVAO/28e5k3KS+WVCCoPO/rPTftVVW3dfWcR63nuv2XIaIzk6VPsj39iuqJ9YDlhPJv+uf9/wgP89lihI9JNh9hmmWL7MJ9QBLay1A+a31RynUtjZTsjjZIqQSaHHkllENKE7r6yYlvkmFGtdsnlTIuERU2y0o5dR34LWBFIShN9wn/shNyEsBF9yhanqGlE1D8Ksq3+I+8wo+fv+J7MF8BAAD//yA+6LQ="
 }
