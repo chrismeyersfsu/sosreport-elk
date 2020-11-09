@@ -33,6 +33,20 @@ in this repository. To import them into kibana follow the steps below:
 * Drag and drop or select the dashboards from the `kibana_saved_objects` directory
 * Click Import
 
+### Contribute Useful Dashboard
+
+At this point, you have successfully loaded an SOSReport into the ELK stack, have
+played around with it, have seen the value, and have even created your own visualization
+that you think others would find helpful. Now you want to contribute your useful
+dashboard.
+
+* Save your discover view / dashboard / visualization
+* Head over to `Stack Management -> Saved objects` and find your entry
+* Check your entry and click the Export button
+* Turn off `Include related objects` and click Export
+* Download the file to the `kibana_saved_objects/` in this repository
+* Submit a PR !!
+
 ### Use-Case, NGINX 500s
 
 From a failing nightly run in our jenkins server, I downloaded and extracted 
