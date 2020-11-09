@@ -35,10 +35,17 @@ class LookupModule(LookupBase):
 
     def get_tower_hostname(self, root, pathname):
         path = os.path.join(root, pathname, "etc", "tower", "conf.d", "cluster_host_id.py")
-        with open(path) as f:
-            data = f.read()
-        m = re.search("CLUSTER_HOST_ID = '(.*?)'", data)
-        return m.group(1)
+        try:
+            with open(path) as f:
+                data = f.read()
+            m = re.search("CLUSTER_HOST_ID = '(.*?)'", data)
+            if m.group(1):
+                return m.group(1)
+        except FileNotFoundError:
+            pass
+
+        with open(os.path.join(root, pathname, "etc", "hostname")) as f:
+            return f.read()
 
     def run(self, terms, variables=None, **kwargs):
         entry = {
