@@ -69,3 +69,27 @@ deadlocks are notoriously hard to debug. There are at least two sides to a deadl
 I've found 1 side, the DELETE to organization 2649. What is on the other side and
 what integration test(s) are running? Note the time the deadlock happens and look
 at all events happening during that time.
+
+### Debugging
+
+*I don't see any logs in Kibana*
+Check your time window. The default is "Last 15 Minutes". I usually set it to "Last 1 Year"
+
+*I checked my time window and I still don't see logs in Kibana*
+The `filebeat run` command that sends data to elasticsearch may have failed. Run `docker logs sosreport-elk_filebeat_1` and report the error.
+A "normal" looking successfull log looks like the below.
+
+```
+Overwriting ILM policy is disabled. Set `setup.ilm.overwrite: true` for enabling.
+
+Index setup finished.
+Loading dashboards (Kibana must be running and reachable)
+Loaded dashboards
+Setting up ML using setup --machine-learning is going to be removed in 8.0.0. Please use the ML app instead.
+See more: https://www.elastic.co/guide/en/machine-learning/current/index.html
+Loaded machine learning job configurations
+Loaded Ingest pipelines
+```
+
+*Something went sideways.*
+Delete the existing ELK stack and start over via `docker-compuse up --force-recreate`
