@@ -58,16 +58,19 @@ class LookupModule(LookupBase):
         ret = []
         for term in terms:
             matches = []
-            for x in os.listdir(term):
-                fullpath = os.path.join(term, x)
-                if not os.path.isdir(fullpath):
-                    continue
-                if not self.looks_like_sosreport(x):
-                    continue
-                entry = {
-                    'hostname': self.get_tower_hostname(term, x),
-                    'path': x,
-                }
-                ret.append(entry)
+            try:
+                for x in os.listdir(term):
+                    fullpath = os.path.join(term, x)
+                    if not os.path.isdir(fullpath):
+                        continue
+                    if not self.looks_like_sosreport(x):
+                        continue
+                    entry = {
+                        'hostname': self.get_tower_hostname(term, x),
+                        'path': x,
+                    }
+                    ret.append(entry)
+            except FileNotFoundError:
+                pass
 
         return ret

@@ -18,6 +18,11 @@
       set_fact:
         sosreports: "{{ lookup('find_sosreports', sosreports_dir, wantlist=True) }}"
 
+    - name: "Ensure we found at least 1 sos report"
+      fail:
+        msg: 'Failed to find any sosreports in "{{ sosreports_dir }}". Please make sure the directory exists and contains at least 1 sos report.'
+      when: "sosreports | length == 0"
+
     - name: "Template filebeat modules"
       template:
         src: "{{ item.src }}"
