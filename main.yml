@@ -8,6 +8,12 @@
         msg: "sosreports_dir is not defined"
       when: sosreports_dir is not defined
 
+    - name: "Create local modules.d dir"
+      local_action:
+        module: file
+        state: directory
+        path: modules.d
+
     - name: "Template docker compose"
       template:
         src: "docker-compose.yml.j2"
