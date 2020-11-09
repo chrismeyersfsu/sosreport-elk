@@ -92,4 +92,4 @@ Loaded Ingest pipelines
 ```
 
 *Something went sideways.*
-Delete the existing ELK stack and start over via `docker-compuse up --force-recreate`
+Delete the existing ELK stack and start over via `docker-compose up --force-recreate`
