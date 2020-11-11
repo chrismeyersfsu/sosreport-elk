@@ -3,7 +3,11 @@ paths:
 {{ range $i, $path := .paths }}
  - {{$path}}
 {{ end }}
-exclude_files: [".gz$"]
+exclude_files:
+  - \.gz$
+  - setup.*log$
+  - management_playbooks.log
+  - management_playbooks.log.*
 multiline:
   pattern: '^\d\d\d\d-\d\d-\d\d'
   match: after
