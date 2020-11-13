@@ -1,3 +1,9 @@
+queue:
+  mem:
+    events: 40960
+    flush.min_events: 4096
+    flush.timeout: 5s
+
 # ============================== Filebeat modules ==============================
 
 filebeat.config.modules:
@@ -56,6 +62,8 @@ output.elasticsearch:
 
   # Protocol - either `http` (default) or `https`.
   protocol: "http"
+  bulk_max_size: 100
+  worker: 4
 
   # Authentication credentials - either API key or username/password.
   #api_key: "id:api_key"
@@ -66,7 +74,7 @@ output.elasticsearch:
 
 # Sets log level. The default log level is info.
 # Available log levels are: error, warning, info, debug
-logging.level: warning
+logging.level: info
 
 # At debug level, you can selectively enable logging only for some components.
 # To enable all selectors use ["*"]. Examples of other selectors are "beat",
@@ -77,21 +85,8 @@ logging.selectors: ["*"]
 # Filebeat can export internal metrics to a central Elasticsearch monitoring
 # cluster.  This requires xpack monitoring to be enabled in Elasticsearch.  The
 # reporting is disabled by default.
-
-# Set to true to enable the monitoring reporter.
-#monitoring.enabled: false
-
-# Sets the UUID of the Elasticsearch cluster under which monitoring data for this
-# Filebeat instance will appear in the Stack Monitoring UI. If output.elasticsearch
-# is enabled, the UUID is derived from the Elasticsearch cluster referenced by output.elasticsearch.
-#monitoring.cluster_uuid:
-
-# Uncomment to send the metrics to Elasticsearch. Most settings from the
-# Elasticsearch output are accepted here as well.
-# Note that the settings should point to your Elasticsearch *monitoring* cluster.
-# Any setting that is not set is automatically inherited from the Elasticsearch
-# output configuration, so if you have the Elasticsearch output configured such
-# that it is pointing to your Elasticsearch monitoring cluster, you can simply
-# uncomment the following line.
-#monitoring.elasticsearch:
-
+#
+monitoring:
+  enabled: true
+  elasticsearch:
+    hosts: ["elk:9200"]

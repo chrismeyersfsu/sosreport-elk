@@ -1,11 +1,16 @@
 version: "3"
 services:
   elk:
-    image: sebp/elk
+    image: sebp/elk:793
     ports:
       - "5601:5601"
       - "9200:9200"
       - "5044:5044"
+    environment:
+      - xpack.monitoring.collection.enabled=true
+    volumes:
+      - "./elasticsearch.yml:/etc/elasticsearch/elasticsearch.yml:ro"
+    user: "0:0"
 
   filebeat:
     image: docker.elastic.co/beats/filebeat-oss:7.9.3
