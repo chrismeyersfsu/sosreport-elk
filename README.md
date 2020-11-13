@@ -47,29 +47,6 @@ dashboard.
 * Download the file to the `kibana_saved_objects/` in this repository
 * Submit a PR !!
 
-### Use-Case, NGINX 500s
-
-From a failing nightly run in our jenkins server, I downloaded and extracted 
-an SOSReport. I went to the `[Filebeat Nginx] Access and error logs ECS`
-dashboard that is autoloaded into Kibana by `filebeat setup` that is run behind
-the scenes one of the `docker-compose` containers via the init script `filebeat.sh`. 
-I then searched for all 500 nginx errors `http.response.status_code:500`. Below 
-is a screenshot of those results.
-
-![nginx 500 list](../assets/kibana_nginx_500.png?raw=true)
-
-Now, that is not much detail. So I head over to the tower logs for more detail
-on this organization `/api/v2/organizations/2649/`. I enter the query 
-`event.module:tower and message:"/api/v2/organizations/2649/"`. Below is a screenshot
-of the results
-![tower correlated 500](../assets/kibana_tower_500.png?raw=true)
-
-Bingo, this random SOSReport has an elusive deadlock Traceback found. Oh man,
-deadlocks are notoriously hard to debug. There are at least two sides to a deadlock.
-I've found 1 side, the DELETE to organization 2649. What is on the other side and
-what integration test(s) are running? Note the time the deadlock happens and look
-at all events happening during that time.
-
 ### Debugging
 
 *I don't see any logs in Kibana*</br>
@@ -93,3 +70,8 @@ Loaded Ingest pipelines
 
 *Something went sideways.*</br>
 Delete the existing ELK stack and start over via `docker-compose up --force-recreate`
+
+*It looks like nothing is happening*</br>
+It can take some time to import an SOSReport and show up in the Kibana dashboard. I am not quite sure how/when filebeat decides to processes files. Although you can't see a percentage view or anything that tells you how far filebeat is from completion, you can see a historical processing view in kibana. Go to `Stack Monitoring` from the hamburger menu on the left. Below is an example of the view that you should see. From this view, you can see the rate at which filebeat events are being processed as well as the total number of events processed so far.
+
+![filebeat metrics](../assets/debug_elasticsearch_filebeat_metrics.png?raw=true)
