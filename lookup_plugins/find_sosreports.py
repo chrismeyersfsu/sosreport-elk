@@ -22,19 +22,15 @@ from ansible.utils.display import Display
 
 import os
 import re
+import glob
 
 display = Display()
 
 
 class LookupModule(LookupBase):
 
-    def looks_like_sosreport(self, pathname):
-        if pathname.startswith('sosreport'):
-            return True
-        return False
-
-    def get_tower_hostname(self, root, pathname):
-        path = os.path.join(root, pathname, "etc", "tower", "conf.d", "cluster_host_id.py")
+    def get_tower_hostname(self, pathname):
+        path = os.path.join(pathname, "etc", "tower", "conf.d", "cluster_host_id.py")
         try:
             with open(path) as f:
                 data = f.read()
@@ -44,10 +40,14 @@ class LookupModule(LookupBase):
         except FileNotFoundError:
             pass
 
-        with open(os.path.join(root, pathname, "etc", "hostname")) as f:
-            return f.read()
+        try:
+            with open(os.path.join(pathname, "etc", "hostname")) as f:
+                return f.read()
+        except FileNotFoundError:
+            pass
+        return "NOTFOUND"
 
-    def run(self, terms, variables=None, **kwargs):
+    def run(self, terms, variables=None, recursive=False, **kwargs):
         entry = {
             'hostname': '',
             'path': '',
@@ -56,18 +56,18 @@ class LookupModule(LookupBase):
         # lookups in general are expected to both take a list as input and output a list
         # this is done so they work with the looping construct 'with_'.
         ret = []
-        for term in terms:
+        for directory in terms:
+            directory = os.path.abspath(directory)
             matches = []
             try:
-                for x in os.listdir(term):
-                    fullpath = os.path.join(term, x)
-                    if not os.path.isdir(fullpath):
-                        continue
-                    if not self.looks_like_sosreport(x):
+                f = open('/tmp/outme', 'w')
+                for x in glob.iglob(f'{directory}/**/sosreport-*', recursive=recursive):
+                    f.write(f'{x}\n')
+                    if not os.path.isdir(x):
                         continue
                     entry = {
-                        'hostname': self.get_tower_hostname(term, x),
-                        'path': x,
+                        'hostname': self.get_tower_hostname(x),
+                        'path': x.replace(directory + '/', ''),
                     }
                     ret.append(entry)
             except FileNotFoundError:
