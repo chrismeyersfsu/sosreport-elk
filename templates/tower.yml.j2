@@ -5,4 +5,12 @@
     var.paths: ["{{ sosreport_base_dir }}/{{ e.path }}/var/log/tower/*.log*"]
     var.fields:
       hostname: "{{ e.hostname }}"
+    input:
+      scan_frequency: 20m
+      # After eof is reached, how long to wait until trying the file again
+      backoff: 20m
+      max_backoff: 60m
+      close_eof: true
+      close_inactive: 10s
+      harvester_buffer_size: 1048576
 {% endfor %}

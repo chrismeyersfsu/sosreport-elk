@@ -1,11 +1,10 @@
 queue:
   mem:
-    events: 40960
-    flush.min_events: 4096
-    flush.timeout: 5s
+    events: 327680 # bulk * workers * 2 * 2
+    flush.min_events: 40960 # match bulk_max_size
+    flush.timeout: 600s # 10 minutes, just set it high
 
 # ============================== Filebeat modules ==============================
-
 filebeat.config.modules:
   # Glob pattern for configuration loading
   path: ${path.config}/modules.d/*.yml
@@ -22,7 +21,6 @@ setup.template.settings:
   index.number_of_shards: 1
   #index.codec: best_compression
   #_source.enabled: false
-
 
 # ================================== General ===================================
 
@@ -62,17 +60,10 @@ output.elasticsearch:
 
   # Protocol - either `http` (default) or `https`.
   protocol: "http"
-  bulk_max_size: 100
-  worker: 4
-
-  # Authentication credentials - either API key or username/password.
-  #api_key: "id:api_key"
-  #username: "awx_logger"
-  #password: "workflows"
-
+  bulk_max_size: 40960 # more than this and 429 response from server
+  worker: 2 # more than 2 workers results in error/retry pattern, 8 core laptop can't handle it
 # ================================== Logging ===================================
 
-# Sets log level. The default log level is info.
 # Available log levels are: error, warning, info, debug
 logging.level: info
 
