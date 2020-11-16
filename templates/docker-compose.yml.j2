@@ -7,11 +7,11 @@ services:
       - "9200:9200"
       - "5044:5044"
     environment:
-      - xpack.monitoring.collection.enabled=true
       #- "ES_HEAP_SIZE=8g"
       #- "JAVA_OPTS=$JAVA_OPTS -Xms8g -Xmx8g -Xmn8g -XX:+DisableExplicitGC "
     volumes:
       - "./elasticsearch.yml:/etc/elasticsearch/elasticsearch.yml:ro"
+      - "./kibana.yml:/opt/kibana/config/kibana.yml:ro"
     user: "0:0"
 
   filebeat:
