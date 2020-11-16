@@ -6,7 +6,7 @@ services:
       - "5601:5601"
       - "9200:9200"
       - "5044:5044"
-    environment:
+    environment: []
       #- "ES_HEAP_SIZE=8g"
       #- "JAVA_OPTS=$JAVA_OPTS -Xms8g -Xmx8g -Xmn8g -XX:+DisableExplicitGC "
     volumes:
@@ -19,6 +19,7 @@ services:
     entrypoint: /filebeat.sh
     volumes:
       - "./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
+      - "./kibana_dashboards/tower-discover.json:/usr/share/filebeat/kibana/7/dashboard/tower-discover.json:ro"
       - "./filebeat.sh:/filebeat.sh"
       - "./modules.d:/usr/share/filebeat/modules.d"
       - "./module/tower:/usr/share/filebeat/module/tower"

@@ -25,13 +25,7 @@ that were processed by the `filebeat` `tower` module.
 
 ### Importing Dashboards
 
-Dashboards that are useful for SOSReport data are saved in `kibana_saved_objects`
-in this repository. To import them into kibana follow the steps below:
-* Open you kibana dashboard at http://localhost:5601
-* Navigate to `Stack Management -> Saved objects`
-* Click import
-* Drag and drop or select the dashboards from the `kibana_saved_objects` directory
-* Click Import
+Dashboards are now auto-imported.
 
 ### Contribute Useful Dashboard
 
@@ -50,28 +44,24 @@ dashboard.
 ### Debugging
 
 *I don't see any logs in Kibana*</br>
-Check your time window. The default is "Last 15 Minutes". I usually set it to "Last 1 Year"
+The ELK stack takes about 2 minutes to come up and begin processing. If you think
+the processing should be finished but still don't see results check your time window. 
+The default is "Last 15 Minutes". I usually set it to "Last 1 Year"
 
 *I checked my time window and I still don't see logs in Kibana*</br>
 The `filebeat run` command that sends data to elasticsearch may have failed. Run `docker logs sosreport-elk_filebeat_1` and report the error.
 A "normal" looking successfull log looks like the below.
 
 ```
-Overwriting ILM policy is disabled. Set `setup.ilm.overwrite: true` for enabling.
-
-Index setup finished.
+Loaded Ingest pipelines
 Loading dashboards (Kibana must be running and reachable)
 Loaded dashboards
-Setting up ML using setup --machine-learning is going to be removed in 8.0.0. Please use the ML app instead.
-See more: https://www.elastic.co/guide/en/machine-learning/current/index.html
-Loaded machine learning job configurations
-Loaded Ingest pipelines
 ```
 
 *Something went sideways.*</br>
 Delete the existing ELK stack and start over via `docker-compose up --force-recreate`
 
 *It looks like nothing is happening*</br>
-It can take some time to import an SOSReport and show up in the Kibana dashboard. I am not quite sure how/when filebeat decides to processes files. Although you can't see a percentage view or anything that tells you how far filebeat is from completion, you can see a historical processing view in kibana. Go to `Stack Monitoring` from the hamburger menu on the left. Below is an example of the view that you should see. From this view, you can see the rate at which filebeat events are being processed as well as the total number of events processed so far.
+It can take some time to import an SOSReport and show up in the Kibana dashboard. Although you can't see a percentage view or anything that tells you how far filebeat is from completion, you can see a historical processing view in kibana. Go to `Stack Monitoring` from the hamburger menu on the left. Below is an example of the view that you should see. From this view, you can see the rate at which filebeat events are being processed as well as the total number of events processed so far.
 
 ![filebeat metrics](../assets/debug_elasticsearch_filebeat_metrics.png?raw=true)
