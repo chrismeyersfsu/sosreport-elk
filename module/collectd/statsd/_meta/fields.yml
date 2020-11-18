@@ -1,0 +1,18 @@
+- name: statsd
+  type: group
+  description: >
+    Contains fields from collectd statsd logs.
+  fields:
+    - name: key
+      type: keyword
+      description: >
+        The name of the statistic as emitted by statsd.
+    - name: value
+      type: float
+      description: >
+        The value of the statistic as emitted by statsd.
+    - name: timestamp_seconds
+      type: long
+      description: >
+        When the statistic was recognized by collectd.
+        Time since the epoch in seconds.

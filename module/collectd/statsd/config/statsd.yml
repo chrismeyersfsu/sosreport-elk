@@ -1,0 +1,11 @@
+type: log
+paths:
+{{ range $i, $path := .paths }}
+ - {{$path}}
+{{ end }}
+exclude_files: [".gz$"]
+multiline:
+  pattern: '^\[\d\d\d\d-'
+  match: after
+  negate: true
+include_lines: ['^\[\d\d\d\d-\d\d-\d\d \d\d:\d\d:\d\d\] write_log values:']

@@ -1,0 +1,3 @@
+dashboards:
+- id: Filebeat-collectd-statsd-Dashboard
+  file: Filebeat-collectd-statsd.json

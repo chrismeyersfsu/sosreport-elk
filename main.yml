@@ -43,4 +43,6 @@
           dest: "nginx.yml"
         - src: "tower.yml.j2"
           dest: "tower.yml"
+        - src: "collectd.yml.j2"
+          dest: "collectd.yml"
 

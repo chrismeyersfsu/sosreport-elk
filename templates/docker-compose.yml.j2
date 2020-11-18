@@ -10,19 +10,20 @@ services:
       #- "ES_HEAP_SIZE=8g"
       #- "JAVA_OPTS=$JAVA_OPTS -Xms8g -Xmx8g -Xmn8g -XX:+DisableExplicitGC "
     volumes:
-      - "./elasticsearch.yml:/etc/elasticsearch/elasticsearch.yml:ro"
-      - "./kibana.yml:/opt/kibana/config/kibana.yml:ro"
+      - "./elasticsearch.yml:/etc/elasticsearch/elasticsearch.yml"
+      - "./kibana.yml:/opt/kibana/config/kibana.yml"
     user: "0:0"
 
   filebeat:
     image: docker.elastic.co/beats/filebeat-oss:7.9.3
     entrypoint: /filebeat.sh
     volumes:
-      - "./filebeat.yml:/usr/share/filebeat/filebeat.yml:ro"
+      - "./filebeat.yml:/usr/share/filebeat/filebeat.yml"
       - "./kibana_dashboards/tower-discover.json:/usr/share/filebeat/kibana/7/dashboard/tower-discover.json:ro"
       - "./filebeat.sh:/filebeat.sh"
       - "./modules.d:/usr/share/filebeat/modules.d"
       - "./module/tower:/usr/share/filebeat/module/tower"
+      - "./module/collectd:/usr/share/filebeat/module/collectd"
       - "{{ sosreports_dir }}:/thelogs"
     environment:
       - "strict.perms=false"
