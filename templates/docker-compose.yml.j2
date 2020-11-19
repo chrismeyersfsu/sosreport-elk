@@ -6,12 +6,16 @@ services:
       - "5601:5601"
       - "9200:9200"
       - "5044:5044"
+      - "5055:5055" # logstash tower
     environment: []
       #- "ES_HEAP_SIZE=8g"
       #- "JAVA_OPTS=$JAVA_OPTS -Xms8g -Xmx8g -Xmn8g -XX:+DisableExplicitGC "
     volumes:
       - "./elasticsearch.yml:/etc/elasticsearch/elasticsearch.yml"
       - "./kibana.yml:/opt/kibana/config/kibana.yml"
+      - "./13-logstash-tower.conf:/etc/logstash/conf.d/13-logstash-tower.conf"
+    networks:
+      - tools_default
     user: "0:0"
 
   filebeat:
@@ -28,3 +32,7 @@ services:
     environment:
       - "strict.perms=false"
     user: "0:0"
+
+networks:
+  tools_default:
+    external: true
