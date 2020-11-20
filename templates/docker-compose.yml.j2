@@ -31,6 +31,8 @@ services:
       - "{{ sosreports_dir }}:/thelogs"
     environment:
       - "strict.perms=false"
+    networks:
+      - tools_default
     user: "0:0"
 
 networks:
