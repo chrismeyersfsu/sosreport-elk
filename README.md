@@ -11,6 +11,7 @@ Current log files processed:
 * Run the below commands to start the ELK stack and ingest the SOSReport
 ```
 ansible-playbook main.yml -v -e sosreports_dir=/home/meyers/Downloads/sos/all_tower_sos_reports
+sysctl -w vm.max_map_count=262144
 docker-compose up
 ```
 * Load Kibana to see the results http://localhost:5601
