@@ -3,6 +3,7 @@
   tower:
     enabled: true
     var.paths: ["{{ sosreport_base_dir }}/{{ e.path }}/var/log/tower/*.log*"]
+    exclude_files: ["{{ sosreport_base_dir }}/{{ e.path }}/var/log/tower/job_lifecycle.log"]
     var.fields:
       hostname: "{{ e.hostname }}"
     input:

@@ -1,0 +1,31 @@
+{
+	"objects": [{
+        "attributes": {
+            "columns": ["json.state", "json.task_id", "json.template_name", "json.type"],
+            "description": "",
+            "hits": 0,
+            "kibanaSavedObjectMeta": {
+                "searchSourceJSON": "{\"highlightAll\":true,\"version\":true,\"query\":{\"language\":\"kuery\",\"query\":\"\"},\"filter\":[{\"$state\":{\"store\":\"appState\"},\"meta\":{\"alias\":null,\"disabled\":false,\"key\":\"input.type\",\"negate\":false,\"params\":{\"query\":\"log\"},\"type\":\"phrase\",\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index\"},\"query\":{\"match_phrase\":{\"input.type\":\"log\"}}}],\"indexRefName\":\"kibanaSavedObjectMeta.searchSourceJSON.index\"}"
+            },
+            "sort": [],
+            "title": "Job Lifecycle",
+            "version": 1
+        },
+        "id": "4a610ac0-7261-11eb-a9f0-ad92569316d0",
+        "migrationVersion": {
+            "search": "7.9.3"
+        },
+        "references": [{
+            "id": "filebeat-*",
+            "name": "kibanaSavedObjectMeta.searchSourceJSON.index",
+            "type": "index-pattern"
+        }, {
+            "id": "filebeat-*",
+            "name": "kibanaSavedObjectMeta.searchSourceJSON.filter[0].meta.index",
+            "type": "index-pattern"
+        }],
+        "type": "search",
+        "updated_at": "2021-02-22T15:09:51.740Z",
+        "version": "WzE1OSw0XQ=="
+	}]
+}
