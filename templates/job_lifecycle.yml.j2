@@ -1,0 +1,27 @@
+{% for e in sosreports %}
+- type: log
+  enabled: true
+  paths:
+    - "{{ sosreport_base_dir }}/{{ e.path }}/var/log/tower/job_lifecycle.log"
+  #json.overwrite_keys: true
+  json.add_error_key: true
+  fields:
+    hostname: "{{ e.hostname }}"
+    tower_log_category: "job_lifecycle"
+  input:
+    scan_frequency: 20m
+    # After eof is reached, how long to wait until trying the file again
+    backoff: 20m
+    max_backoff: 60m
+    close_eof: true
+    close_inactive: 10s
+    harvester_buffer_size: 1048576
+  processors:
+    - timestamp:
+        field: json.time
+        layouts:
+          - '2006-01-02T15:04:05.999-07:00'
+        test:
+          - '2021-02-12T15:23:49.325729+00:00'
+
+{% endfor %}

@@ -15,6 +15,11 @@ filebeat.config.modules:
   # Period on which files under path should be checked for changes
   #reload.period: 10s
 
+# Inputs
+filebeat.config.inputs:
+  enabled: true
+  path: inputs.d/*.yml
+
 # ======================= Elasticsearch template setting =======================
 
 setup.template.settings:

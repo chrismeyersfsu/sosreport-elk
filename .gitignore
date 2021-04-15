@@ -1,3 +1,4 @@
 docker-compose.yml
 modules.d/
+inputs.d/
 __pycache__

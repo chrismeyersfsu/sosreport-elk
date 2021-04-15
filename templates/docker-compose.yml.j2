@@ -19,13 +19,15 @@ services:
     user: "0:0"
 
   filebeat:
-    image: docker.elastic.co/beats/filebeat-oss:7.9.3
+    image: docker.elastic.co/beats/filebeat-oss:latest
     entrypoint: /filebeat.sh
     volumes:
       - "./filebeat.yml:/usr/share/filebeat/filebeat.yml"
       - "./kibana_dashboards/tower-discover.json:/usr/share/filebeat/kibana/7/dashboard/tower-discover.json:ro"
+      - "./kibana_dashboards/job-lifecycle.json:/usr/share/filebeat/kibana/7/dashboard/job-lifecycle.json:ro"
       - "./filebeat.sh:/filebeat.sh"
       - "./modules.d:/usr/share/filebeat/modules.d"
+      - "./inputs.d:/usr/share/filebeat/inputs.d"
       - "./module/tower:/usr/share/filebeat/module/tower"
       - "./module/collectd:/usr/share/filebeat/module/collectd"
       - "{{ sosreports_dir }}:/thelogs"
