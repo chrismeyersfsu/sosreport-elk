@@ -1,0 +1,35 @@
+# Use this config to pump logs into loki
+# docker run --rm --name promtail -v ./sosreport-awx1-2023-08-10-namgxyy:/sos -v ./prom.yml:/etc/promtail/config.yml --network sosreport-elk_loki grafana/promtail:latest
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+positions:
+  filename: /tmp/positions.yaml
+
+scrape_configs:
+  - job_name: nginx
+    static_configs:
+      - labels:
+          app: nginx
+          host: awx_1
+          __path__: /sos/var/log/nginx/*.log
+    pipeline_stages:
+      - match:
+          selector: '{app="nginx"}'
+          stages:
+            - regex:
+              # 172.23.0.1 - - [10/Aug/2023:19:55:49 +0000] "GET /api/v2/ HTTP/1.1" 200 15743 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36" "-"
+                expression: '^(?P<host>[\w\.]+) - (?P<user>[^ ]*) \[(?P<timestamp>.*)\] "(?P<method>[^ ]*) (?P<request_url>[^ ]*) (?P<request_http_protocol>[^ ]*)" (?P<status>[\d]+) (?P<bytes_out>[\d]+) "(?P<http_referer>[^"]*)" "(?P<user_agent>[^"]*)"? "(?P<http_x_forwarded_for>[^"]*)"?'
+            - labels:
+                host:
+                method:
+                request_url:
+                status:
+                user_agent:
+  - job_name: system
+    static_configs:
+      - labels:
+          job: varlogs
+          __path__: /sos/var/log/**/*log
+
