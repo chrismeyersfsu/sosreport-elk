@@ -1,0 +1,14 @@
+- targets:
+    - "localhost"
+  labels:
+    app: nginx
+    host: awx_1
+    __path__: /sosreports/sosreport-awx1-2023-08-10-namgxyy/var/log/nginx/*.log
+    #__path__: /sosreports/**/var/log/nginx/*.log
+#- targets:
+#    - "localhost"
+#  labels:
+#    app: varlogs
+#    host: awx_1
+#    __path__: /sosreports/sosreport-awx1-2023-08-10-namgxyy/var/log/**/*.log
+# TODO: ignore nginx

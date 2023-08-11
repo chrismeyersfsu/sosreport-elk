@@ -16,6 +16,8 @@ services:
     image: grafana/promtail:2.8.0
     volumes:
       - ${PWD}/docker/promtail/etc/promtail/config.yml:/etc/promtail/config.yml
+      - ${PWD}/sosreports:/sosreports
+      - ${PWD}/test/promtail_configs:/promtail_configs
     command: -config.file=/etc/promtail/config.yml
     networks:
       - loki
