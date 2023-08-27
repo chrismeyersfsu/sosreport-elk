@@ -11,18 +11,32 @@ services:
     command: -config.file=/etc/loki/local-config.yaml
     networks:
       - loki
+    volumes:
+      - ${PWD}/docker/loki/etc/loki/local-config.yaml:/etc/loki/local-config.yaml
 
   promtail:
     image: grafana/promtail:2.8.0
     volumes:
       - ${PWD}/docker/promtail/etc/promtail/config.yml:/etc/promtail/config.yml
       - ${PWD}/sosreports:/sosreports
-      - ${PWD}/test/promtail_configs:/promtail_configs
+      - ${PWD}/sosreports_extract:/sosreports_extract
+      - ${PWD}/promtail_configs:/promtail_configs
     command: -config.file=/etc/promtail/config.yml
     networks:
       - loki
     ports:
       - "9080:9080"
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.app
+    volumes:
+      - ${PWD}/sosreports:/sosreports
+      - ${PWD}/sosreports_extract:/sosreports_extract
+      - ${PWD}/promtail_configs:/promtail_configs
+      - ${PWD}/app:/app
+    command: /app/main.py
 
   grafana:
     environment:
@@ -42,6 +56,7 @@ services:
           access: proxy 
           orgId: 1
           url: http://loki:3100
+          timeout: 300
           basicAuth: false
           isDefault: true
           version: 1

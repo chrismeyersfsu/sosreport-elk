@@ -5,4 +5,13 @@ services:
       service: promtail
     volumes:
       - ${PWD}/test/directory_watch_sosreport/promtail_configs:/promtail_configs
+      - ${PWD}/test/directory_watch_sosreport/sosreports_extract:/sosreports_extract
+
+  app:
+    extends:
+      file: docker-compose.yaml
+      service: app
+    volumes:
+      - ${PWD}/test/directory_watch_sosreport/promtail_configs:/promtail_configs
       - ${PWD}/test/directory_watch_sosreport/sosreports:/sosreports
+      - ${PWD}/test/directory_watch_sosreport/sosreports_extract:/sosreports_extract
