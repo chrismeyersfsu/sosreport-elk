@@ -1,4 +1,4 @@
-from python
+from python:3.11
 RUN pip3 install \
 Jinja2 \
 pyinotify
