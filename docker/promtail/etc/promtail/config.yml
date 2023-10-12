@@ -1,0 +1,33 @@
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: nginx
+    file_sd_configs:
+      - files:
+          - '/promtail_configs/*.yml'
+        refresh_interval: 5s
+    pipeline_stages:
+      - match:
+          selector: '{app="nginx"}'
+          stages:
+            - regex:
+                # 172.23.0.1 - - [10/Aug/2023:19:55:49 +0000] "GET /api/v2/ HTTP/1.1" 200 15743 "-" "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36" "-"
+                #expression: '^(?P<host>[\w\.]+) - (?P<user>[^ ]*) \[(?P<timestamp>.*)\] "(?P<method>[^ ]*) (?P<request_url>[^ ]*) (?P<request_http_protocol>[^ ]*)" (?P<status>[\d]+) (?P<bytes_out>[\d]+) "(?P<http_referer>[^"]*)" "(?P<user_agent>[^"]*)"? "(?P<http_x_forwarded_for>[^"]*)"?'
+                expression: '^(?P<host>[\w\.]+) - (?P<user>[^ ]*) \[(?P<timestamp>.*)\] "(?P<method>[^ ]*) (?P<request_url>[^ ]*) (?P<request_http_protocol>[^ ]*)" (?P<status>[\d]+) (?P<bytes_out>[\d]+) "(?P<http_referer>[^"]*)" "(?P<user_agent>[^"]*)"?'
+            - timestamp:
+                source: timestamp
+                #action_on_failure: skip
+                format: "02/Jan/2006:15:04:05 +0000"
+            - labels:
+                host:
+                method:
+                request_url:
+                status:

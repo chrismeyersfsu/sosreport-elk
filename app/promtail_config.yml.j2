@@ -1,0 +1,16 @@
+- targets:
+    - "localhost"
+  labels:
+    app: nginx
+    host: {{ hostname }}
+    fname: access.log
+    __path__: {{ sosreport_dir }}/var/log/nginx/*access.log*
+# TODO: nginx error.log target with respective regex. The format is just different.
+#- targets:
+#    - "localhost"
+#  labels:
+#    app: varlogs
+#    host: awx_1
+#    __path__: {{ sosreport_dir }}/var/log/**/*.log
+# TODO: ignore nginx
+
