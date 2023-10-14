@@ -4,7 +4,7 @@ providers:
     orgId: 1
     type: file
     updateIntervalSeconds: 10
-    allowUiUpdates: false
+    allowUiUpdates: true
     options:
       path: /opt/grafana/dashboards/
       foldersFromFilesStructure: true
