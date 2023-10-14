@@ -132,8 +132,8 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "editorMode": "builder",
-          "expr": "{fname=\"access.log\"} |= ``",
+          "editorMode": "code",
+          "expr": "{host=~\"${host:pipe}\"} |= ``",
           "queryType": "range",
           "refId": "A"
         }
@@ -185,13 +185,19 @@
     "list": [
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": [
-            "142.88.22.26"
+            "142.88.22.43",
+            "142.88.22.58"
           ],
           "value": [
-            "142.88.22.26"
+            "142.88.22.43",
+            "142.88.22.58"
           ]
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "P8E80F9AEF21F6940"
         },
         "definition": "",
         "hide": 0,
@@ -221,6 +227,6 @@
   "timezone": "",
   "title": "SOSReport AAP Controller Postmortem",
   "uid": "dc8b7069-52f3-4d11-8c16-6757399efb49",
-  "version": 13,
+  "version": 2,
   "weekStart": ""
 }
