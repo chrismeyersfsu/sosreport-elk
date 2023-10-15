@@ -448,6 +448,254 @@
         }
       ],
       "type": "state-timeline"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "links": [
+            {
+              "title": "filter task_id",
+              "url": "/d/${__dashboard.uid}﻿﻿/﻿${__dashboard}﻿?﻿${__all_variables}﻿&var-task_id=${__field.name}"
+            }
+          ],
+          "mappings": [
+            {
+              "options": {
+                "blocked": {
+                  "color": "red",
+                  "index": 0
+                },
+                "finalize_run": {
+                  "color": "semi-dark-blue",
+                  "index": 6
+                },
+                "pre_run": {
+                  "color": "yellow",
+                  "index": 1
+                },
+                "running_playbook": {
+                  "color": "green",
+                  "index": 2
+                },
+                "stats_wrapup_finished": {
+                  "color": "blue",
+                  "index": 5
+                },
+                "work_unit_id_assigned": {
+                  "color": "super-light-blue",
+                  "index": 4
+                },
+                "work_unit_id_received": {
+                  "color": "purple",
+                  "index": 3
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 7,
+        "x": 0,
+        "y": 32
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "min"
+          ],
+          "fields": "/^time$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 2,
+          "refId": "A",
+          "withTransforms": true
+        }
+      ],
+      "title": "Min time",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "app": true,
+              "blocked_by": true,
+              "filename": true,
+              "fname": true,
+              "guid": true,
+              "host": true,
+              "state": true,
+              "task_id": true,
+              "task_name": true,
+              "type": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "datasource",
+        "uid": "-- Dashboard --"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "continuous-GrYlRd"
+          },
+          "links": [
+            {
+              "title": "filter task_id",
+              "url": "/d/${__dashboard.uid}﻿﻿/﻿${__dashboard}﻿?﻿${__all_variables}﻿&var-task_id=${__field.name}"
+            }
+          ],
+          "mappings": [
+            {
+              "options": {
+                "blocked": {
+                  "color": "red",
+                  "index": 0
+                },
+                "finalize_run": {
+                  "color": "semi-dark-blue",
+                  "index": 6
+                },
+                "pre_run": {
+                  "color": "yellow",
+                  "index": 1
+                },
+                "running_playbook": {
+                  "color": "green",
+                  "index": 2
+                },
+                "stats_wrapup_finished": {
+                  "color": "blue",
+                  "index": 5
+                },
+                "work_unit_id_assigned": {
+                  "color": "super-light-blue",
+                  "index": 4
+                },
+                "work_unit_id_received": {
+                  "color": "purple",
+                  "index": 3
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 2,
+        "w": 7,
+        "x": 7,
+        "y": 32
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "max"
+          ],
+          "fields": "/^time$/",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "10.1.5",
+      "targets": [
+        {
+          "datasource": {
+            "type": "datasource",
+            "uid": "-- Dashboard --"
+          },
+          "panelId": 2,
+          "refId": "A",
+          "withTransforms": true
+        }
+      ],
+      "title": "Max time",
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "app": true,
+              "blocked_by": true,
+              "filename": true,
+              "fname": true,
+              "guid": true,
+              "host": true,
+              "state": true,
+              "task_id": true,
+              "task_name": true,
+              "type": true
+            },
+            "indexByName": {},
+            "renameByName": {}
+          }
+        }
+      ],
+      "type": "stat"
     }
   ],
   "refresh": "",
@@ -513,6 +761,6 @@
   "timezone": "",
   "title": "SOSReport AAP Controller Postmortem",
   "uid": "dc8b7069-52f3-4d11-8c16-6757399efb49",
-  "version": 21,
+  "version": 24,
   "weekStart": ""
 }
