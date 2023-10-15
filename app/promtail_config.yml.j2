@@ -14,3 +14,10 @@
 #    __path__: {{ sosreport_dir }}/var/log/**/*.log
 # TODO: ignore nginx
 
+- targets:
+    - localhost
+  labels:
+    app: job_lifecycle
+    host: {{ hostname }}
+    fname: job_lifecycle.log
+    __path__: {{ sosreport_dir }}/var/log/tower/job_lifecycle*
