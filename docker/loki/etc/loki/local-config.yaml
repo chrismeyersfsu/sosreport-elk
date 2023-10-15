@@ -2,6 +2,9 @@ auth_enabled: false
 
 server:
   http_listen_port: 3100
+  grpc_server_max_recv_msg_size: 104857600 # 100 mb
+  grpc_server_max_send_msg_size: 104857600 # 100 MB, might be too much, be careful
+
 
 ingester:
   max_chunk_age: 8766h
@@ -52,10 +55,11 @@ limits_config:
   per_stream_rate_limit: 32M
   per_stream_rate_limit_burst: 32M
   ingestion_rate_strategy: local # Default: global
-  max_global_streams_per_user: 5000
+  max_global_streams_per_user: 100000000
+  max_entries_limit_per_query: 100000000
   max_query_series: 10000
   max_query_parallelism: 32 # Old Default: 14
-  max_streams_per_user: 0 # Old Default: 10000
+  max_streams_per_user: 100000000 # Old Default: 10000
 
 # Taken from aap-log-visualizer
 frontend:
