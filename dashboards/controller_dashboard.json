@@ -36,6 +36,7 @@
             },
             "inspect": false
           },
+          "links": [],
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -159,6 +160,35 @@
                 "value": 250
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "task_id"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "filter",
+                    "url": "/d/${__dashboard.uid}﻿/${__dashboard}?${__all_variables}&var-task_id=${__value.text}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 225
+              }
+            ]
           }
         ]
       },
@@ -180,7 +210,12 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "time"
+          }
+        ]
       },
       "pluginVersion": "10.1.5",
       "targets": [
@@ -189,13 +224,13 @@
             "type": "loki",
             "uid": "P8E80F9AEF21F6940"
           },
-          "editorMode": "builder",
-          "expr": "{fname=\"job_lifecycle.log\"}",
+          "editorMode": "code",
+          "expr": "{fname=\"job_lifecycle.log\"} | json | task_id =~ \"${task_id:pipe}\"",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "Panel Title",
+      "title": "Job Finder",
       "transformations": [
         {
           "id": "extractFields",
@@ -204,44 +239,51 @@
           }
         },
         {
-          "id": "extractFields",
-          "options": {
-            "source": "Line"
-          }
-        },
-        {
           "id": "organize",
           "options": {
             "excludeByName": {
               "Line": true,
+              "Time": true,
               "guid": false,
               "id": true,
               "labels": true,
-              "time": true,
+              "time": false,
               "tsNs": true
             },
             "indexByName": {
               "Line": 14,
               "Time": 1,
               "app": 15,
-              "blocked_by": 7,
-              "controller_node": 9,
-              "execution_node": 8,
+              "blocked_by": 8,
+              "controller_node": 10,
+              "execution_node": 9,
               "filename": 17,
               "fname": 16,
-              "guid": 11,
-              "host": 2,
+              "guid": 12,
+              "host": 3,
               "id": 18,
               "labels": 0,
-              "state": 6,
-              "task_id": 3,
-              "task_name": 5,
-              "time": 12,
+              "state": 7,
+              "task_id": 4,
+              "task_name": 6,
+              "time": 2,
               "tsNs": 13,
-              "type": 4,
-              "work_unit_id": 10
+              "type": 5,
+              "work_unit_id": 11
             },
             "renameByName": {}
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "time"
+              }
+            ],
+            "fields": {}
           }
         }
       ],
@@ -249,22 +291,66 @@
     },
     {
       "datasource": {
-        "type": "loki",
-        "uid": "P8E80F9AEF21F6940"
+        "type": "datasource",
+        "uid": "-- Dashboard --"
       },
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "continuous-GrYlRd"
           },
           "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
+            "fillOpacity": 70,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
             },
-            "inspect": false
+            "insertNulls": false,
+            "lineWidth": 0,
+            "spanNulls": false
           },
-          "mappings": [],
+          "links": [
+            {
+              "title": "filter task_id",
+              "url": "/d/${__dashboard.uid}﻿﻿/﻿${__dashboard}﻿?﻿${__all_variables}﻿&var-task_id=${__field.name}"
+            }
+          ],
+          "mappings": [
+            {
+              "options": {
+                "blocked": {
+                  "color": "red",
+                  "index": 0
+                },
+                "finalize_run": {
+                  "color": "semi-dark-blue",
+                  "index": 6
+                },
+                "pre_run": {
+                  "color": "yellow",
+                  "index": 1
+                },
+                "running_playbook": {
+                  "color": "green",
+                  "index": 2
+                },
+                "stats_wrapup_finished": {
+                  "color": "blue",
+                  "index": 5
+                },
+                "work_unit_id_assigned": {
+                  "color": "super-light-blue",
+                  "index": 4
+                },
+                "work_unit_id_received": {
+                  "color": "purple",
+                  "index": 3
+                }
+              },
+              "type": "value"
+            }
+          ],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -279,127 +365,89 @@
             ]
           }
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "status"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 97
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "method"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 92
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Time"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 189
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "request_url"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 612
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 13,
+        "h": 25,
         "w": 24,
         "x": 0,
         "y": 7
       },
-      "id": 1,
+      "id": 3,
       "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
+        "alignValue": "left",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
-        "showHeader": true,
-        "sortBy": []
+        "mergeValues": true,
+        "rowHeight": 0.9,
+        "showValue": "auto",
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
       },
       "pluginVersion": "10.1.5",
       "targets": [
         {
           "datasource": {
-            "type": "loki",
-            "uid": "P8E80F9AEF21F6940"
+            "type": "datasource",
+            "uid": "-- Dashboard --"
           },
-          "editorMode": "code",
-          "expr": "{host=~\"${host:pipe}\"} |= ``",
-          "queryType": "range",
-          "refId": "A"
+          "panelId": 2,
+          "refId": "A",
+          "withTransforms": true
         }
       ],
-      "title": "Panel Title",
+      "title": "Job Lifecycle",
       "transformations": [
-        {
-          "id": "extractFields",
-          "options": {
-            "keepTime": false,
-            "replace": false,
-            "source": "labels"
-          }
-        },
         {
           "id": "organize",
           "options": {
             "excludeByName": {
-              "id": true,
-              "labels": true,
-              "tsNs": true
+              "Time": false,
+              "app": true,
+              "blocked_by": true,
+              "controller_node": true,
+              "execution_node": true,
+              "filename": true,
+              "fname": true,
+              "guid": true,
+              "host": true,
+              "task_id": false,
+              "task_name": true,
+              "type": true,
+              "work_unit_id": true
             },
-            "indexByName": {
-              "Line": 11,
-              "Time": 1,
-              "app": 9,
-              "filename": 7,
-              "fname": 8,
-              "host": 10,
-              "id": 3,
-              "labels": 0,
-              "method": 5,
-              "request_url": 6,
-              "status": 4,
-              "tsNs": 2
-            },
+            "indexByName": {},
             "renameByName": {}
+          }
+        },
+        {
+          "id": "groupingToMatrix",
+          "options": {
+            "columnField": "task_id",
+            "emptyValue": "null",
+            "rowField": "time",
+            "valueField": "state"
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "time\\task_id"
+              }
+            ],
+            "fields": {}
           }
         }
       ],
-      "type": "table"
+      "type": "state-timeline"
     }
   ],
   "refresh": "",
@@ -435,6 +483,25 @@
         "skipUrlSync": false,
         "sort": 1,
         "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": ".*",
+          "value": ".*"
+        },
+        "hide": 0,
+        "name": "task_id",
+        "options": [
+          {
+            "selected": true,
+            "text": ".*",
+            "value": ".*"
+          }
+        ],
+        "query": ".*",
+        "skipUrlSync": false,
+        "type": "textbox"
       }
     ]
   },
@@ -446,6 +513,6 @@
   "timezone": "",
   "title": "SOSReport AAP Controller Postmortem",
   "uid": "dc8b7069-52f3-4d11-8c16-6757399efb49",
-  "version": 4,
+  "version": 21,
   "weekStart": ""
 }
