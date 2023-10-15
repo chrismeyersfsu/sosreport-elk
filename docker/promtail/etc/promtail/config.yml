@@ -31,3 +31,20 @@ scrape_configs:
                 method:
                 request_url:
                 status:
+
+  - job_name: job
+    file_sd_configs:
+      - files:
+          - '/promtail_configs/*.yml'
+        refresh_interval: 5s
+    pipeline_stages:
+      - match:
+          selector: '{app="job_lifecycle"}'
+          stages:
+            - json:
+                expressions:
+                  time: time
+            - timestamp:
+                format: RFC3339Nano
+                source: time
+

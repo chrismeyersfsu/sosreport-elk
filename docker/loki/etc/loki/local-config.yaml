@@ -17,6 +17,11 @@ common:
     kvstore:
       store: inmemory
 
+# compactor:
+#   retention_enabled: true
+#   # cmeyers: YOLO. 1s seems wrong but it works so right
+#   compaction_interval: 1s # default 10m
+
 schema_config:
   configs:
     - from: 2020-10-24
@@ -31,6 +36,7 @@ ruler:
   alertmanager_url: http://localhost:9093
 
 limits_config:
+  retention_period: 3y
   # cmeyers: The default of 30m triggers a loop of queries that take a long time
   # to complete and the UI times out
   split_queries_by_interval: 1d
@@ -39,6 +45,28 @@ limits_config:
   max_query_length: 3y
   # cmeyers: Made the batch post request succeed.
   reject_old_samples: false
+  reject_old_samples_max_age: 365d
+
+  ingestion_rate_mb: 32
+  ingestion_burst_size_mb: 32
+  per_stream_rate_limit: 32M
+  per_stream_rate_limit_burst: 32M
+  ingestion_rate_strategy: local # Default: global
+  max_global_streams_per_user: 5000
+  max_query_series: 10000
+  max_query_parallelism: 32 # Old Default: 14
+  max_streams_per_user: 0 # Old Default: 10000
+
+# Taken from aap-log-visualizer
+frontend:
+  max_outstanding_per_tenant: 2048
+
+query_scheduler:
+  max_outstanding_requests_per_tenant: 2048
+
+query_range:
+  parallelise_shardable_queries: false
+  split_queries_by_interval: 0
 
 # By default, Loki will send anonymous, but uniquely-identifiable usage and configuration
 # analytics to Grafana Labs. These statistics are sent to https://stats.grafana.org/
