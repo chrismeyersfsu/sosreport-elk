@@ -1,0 +1,312 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [
+        "sos_filter_noise_https",
+        "some_other_tag",
+        "yet_another_tag"
+      ],
+      "targetBlank": false,
+      "title": "Filter Out Task HTTPS messages",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 20,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "sum by (kubernetes_namespace_name,kubernetes_pod_name,kubernetes_container_name) (count_over_time({job=\"${job_name}\", kubernetes_namespace_name=~\"${namespace:pipe}\", kubernetes_pod_name=~\"${pod:pipe}\", kubernetes_container_name=~\"${container:pipe}\"}[$__interval]))",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "Log Rate Over Time",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "P8E80F9AEF21F6940"
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 11
+      },
+      "id": 2,
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyLogMessage": false,
+        "showCommonLabels": false,
+        "showLabels": false,
+        "showTime": false,
+        "sortOrder": "Descending",
+        "wrapLogMessage": false
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "loki",
+            "uid": "P8E80F9AEF21F6940"
+          },
+          "editorMode": "code",
+          "expr": "{job=${job_name:doublequote}, kubernetes_namespace_name=~\"${namespace:pipe}\", kubernetes_pod_name=~\"${pod:pipe}\", kubernetes_container_name=~\"${container:pipe}\"} !~ `\\s+warnings\\.warn\\($` != \"InsecureRequestWarning: Unverified HTTPS request is being made to host\"",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "title": "RAW Logs",
+      "type": "logs"
+    }
+  ],
+  "refresh": false,
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "tower-1",
+            "tower-2"
+          ],
+          "value": [
+            "tower-1",
+            "tower-2"
+          ]
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "P8E80F9AEF21F6940"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "multi": true,
+        "name": "namespace",
+        "options": [],
+        "query": {
+          "label": "kubernetes_namespace_name",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{job=\"${job_name}\"}",
+          "type": 1
+        },
+        "refresh": 2,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "tower-task-7556799794-75g7j",
+            "tower-task-7556799794-7sfck",
+            "tower-task-7556799794-9fgzf",
+            "tower-task-7556799794-k4dlc"
+          ],
+          "value": [
+            "tower-task-7556799794-75g7j",
+            "tower-task-7556799794-7sfck",
+            "tower-task-7556799794-9fgzf",
+            "tower-task-7556799794-k4dlc"
+          ]
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "P8E80F9AEF21F6940"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "multi": true,
+        "name": "pod",
+        "options": [],
+        "query": {
+          "label": "kubernetes_pod_name",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{job=\"${job_name}\", kubernetes_namespace_name=~\"^${namespace:pipe}$\"}",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": [
+            "tower-task"
+          ],
+          "value": [
+            "tower-task"
+          ]
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "P8E80F9AEF21F6940"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "multi": true,
+        "name": "container",
+        "options": [],
+        "query": {
+          "label": "kubernetes_container_name",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "{job=\"pod-logs\",kubernetes_namespace_name=~\"^${namespace:pipe}$\", kubernetes_pod_name=~\"^${pod:pipe}$\"}",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "hide": 2,
+        "name": "job_name",
+        "query": "pod-logs",
+        "skipUrlSync": false,
+        "type": "constant"
+      },
+      {
+        "datasource": {
+          "type": "loki",
+          "uid": "P8E80F9AEF21F6940"
+        },
+        "filters": [],
+        "hide": 0,
+        "name": "sos_filter_noise",
+        "skipUrlSync": false,
+        "type": "adhoc"
+      }
+    ]
+  },
+  "time": {
+    "from": "2023-10-09T08:38:37.544Z",
+    "to": "2023-10-09T08:52:58.109Z"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "SOSReport AAP Kubernetes Copy",
+  "uid": "fb490aa0-cf09-44d1-8a7f-bb81da076391",
+  "version": 16,
+  "weekStart": ""
+}
