@@ -1,7 +1,7 @@
 - targets:
-    - "localhost"
+    - localhost
   labels:
-    app: nginx
+    job: nginx
     host: {{ hostname }}
     fname: access.log
     __path__: {{ sosreport_dir }}/var/log/nginx/*access.log*
@@ -17,7 +17,19 @@
 - targets:
     - localhost
   labels:
-    app: job_lifecycle
+    job: job_lifecycle
     host: {{ hostname }}
     fname: job_lifecycle.log
     __path__: {{ sosreport_dir }}/var/log/tower/job_lifecycle*
+
+####################################
+# K8S Controller
+####################################
+- targets:
+    - localhost
+  labels:
+    job: pod-logs
+    kubernetes_namespace_name:
+    kubernetes_pod_name:
+    kubernetes_container_name:
+    __path__: /{{ sosreport_dir }}/registry-redhat*/namespaces/*/pods/*/*/*/logs/*.log
