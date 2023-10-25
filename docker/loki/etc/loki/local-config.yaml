@@ -2,8 +2,13 @@ auth_enabled: false
 
 server:
   http_listen_port: 3100
-  grpc_server_max_recv_msg_size: 104857600 # 100 mb
-  grpc_server_max_send_msg_size: 104857600 # 100 MB, might be too much, be careful
+  grpc_server_max_recv_msg_size: 524288000 # 500 MB
+  grpc_server_max_send_msg_size: 524288000 # 500 MB, might be too much, be careful
+
+frontend_worker:
+  match_max_concurrent: true
+  grpc_client_config:
+    max_send_msg_size: 524288000 # 500 MB
 
 
 ingester:

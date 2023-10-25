@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 1,
+  "id": 4,
   "links": [
     {
       "asDropdown": true,
@@ -123,7 +123,7 @@
             "uid": "P8E80F9AEF21F6940"
           },
           "editorMode": "code",
-          "expr": "sum by (kubernetes_namespace_name,kubernetes_pod_name,kubernetes_container_name) (count_over_time({job=\"${job_name}\", kubernetes_namespace_name=~\"${namespace:pipe}\", kubernetes_pod_name=~\"${pod:pipe}\", kubernetes_container_name=~\"${container:pipe}\"}[$__interval]))",
+          "expr": "sum by (kubernetes_namespace_name,kubernetes_pod_name,kubernetes_container_name) (count_over_time({fingerprint=\"${fingerprint}\", job=\"${job_name}\", kubernetes_namespace_name=~\"^${namespace:pipe}$\", kubernetes_pod_name=~\"^${pod:pipe}$\", kubernetes_container_name=~\"^${container:pipe}$\"} ${sos_filter_noise} ${sos_query_extra} [$__interval]))",
           "queryType": "range",
           "refId": "A"
         }
@@ -137,7 +137,7 @@
         "uid": "P8E80F9AEF21F6940"
       },
       "gridPos": {
-        "h": 9,
+        "h": 16,
         "w": 24,
         "x": 0,
         "y": 11
@@ -160,7 +160,8 @@
             "uid": "P8E80F9AEF21F6940"
           },
           "editorMode": "code",
-          "expr": "{job=${job_name:doublequote}, kubernetes_namespace_name=~\"${namespace:pipe}\", kubernetes_pod_name=~\"${pod:pipe}\", kubernetes_container_name=~\"${container:pipe}\"} !~ `\\s+warnings\\.warn\\($` != \"InsecureRequestWarning: Unverified HTTPS request is being made to host\"",
+          "expr": "{job=${job_name:doublequote}, kubernetes_namespace_name=~\"${namespace:pipe}\", kubernetes_pod_name=~\"${pod:pipe}\", kubernetes_container_name=~\"${container:pipe}\"} ${sos_filter_noise} ${sos_query_extra}",
+          "maxLines": 1000,
           "queryType": "range",
           "refId": "A"
         }
@@ -169,7 +170,7 @@
       "type": "logs"
     }
   ],
-  "refresh": "",
+  "refresh": false,
   "schemaVersion": 38,
   "style": "dark",
   "tags": [],
@@ -197,7 +198,7 @@
           "stream": "",
           "type": 1
         },
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -205,10 +206,9 @@
       },
       {
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "tower-1",
+          "value": "tower-1"
         },
         "datasource": {
           "type": "loki",
@@ -234,10 +234,19 @@
       },
       {
         "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
+          "selected": true,
+          "text": [
+            "tower-task-84f8776d9c-6mp9x",
+            "tower-task-84f8776d9c-b9q9w",
+            "tower-task-84f8776d9c-d56l4",
+            "tower-task-84f8776d9c-sjz2p"
+          ],
+          "value": [
+            "tower-task-84f8776d9c-6mp9x",
+            "tower-task-84f8776d9c-b9q9w",
+            "tower-task-84f8776d9c-d56l4",
+            "tower-task-84f8776d9c-sjz2p"
+          ]
         },
         "datasource": {
           "type": "loki",
@@ -255,7 +264,7 @@
           "stream": "{fingerprint=\"${fingerprint}\", job=\"${job_name}\", kubernetes_namespace_name=~\"^${namespace:pipe}$\"}",
           "type": 1
         },
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 1,
@@ -263,10 +272,13 @@
       },
       {
         "current": {
-          "isNone": true,
-          "selected": false,
-          "text": "None",
-          "value": ""
+          "selected": true,
+          "text": [
+            "tower-ee"
+          ],
+          "value": [
+            "tower-ee"
+          ]
         },
         "datasource": {
           "type": "loki",
@@ -284,7 +296,7 @@
           "stream": "{fingerprint=\"${fingerprint}\", job=\"pod-logs\", kubernetes_namespace_name=~\"^${namespace:pipe}$\", kubernetes_pod_name=~\"^${pod:pipe}$\"}",
           "type": 1
         },
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -298,26 +310,53 @@
         "type": "constant"
       },
       {
-        "datasource": {
-          "type": "loki",
-          "uid": "P8E80F9AEF21F6940"
+        "current": {
+          "selected": false,
+          "text": "!= \"needs capacity\" != \"Unverified HTTPS request is being made to host\"",
+          "value": "!= \"needs capacity\" != \"Unverified HTTPS request is being made to host\""
         },
-        "filters": [],
         "hide": 0,
         "name": "sos_filter_noise",
+        "options": [
+          {
+            "selected": true,
+            "text": "!= \"needs capacity\" != \"Unverified HTTPS request is being made to host\"",
+            "value": "!= \"needs capacity\" != \"Unverified HTTPS request is being made to host\""
+          }
+        ],
+        "query": "!= \"needs capacity\" != \"Unverified HTTPS request is being made to host\"",
         "skipUrlSync": false,
-        "type": "adhoc"
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "",
+          "value": ""
+        },
+        "hide": 0,
+        "name": "sos_query_extra",
+        "options": [
+          {
+            "selected": false,
+            "text": "|= \"443636\"",
+            "value": "|= \"443636\""
+          }
+        ],
+        "query": "",
+        "skipUrlSync": false,
+        "type": "textbox"
       }
     ]
   },
   "time": {
-    "from": "2023-10-09T08:38:37.544Z",
-    "to": "2023-10-09T08:52:58.109Z"
+    "from": "2023-09-29T04:00:00.000Z",
+    "to": "2023-09-30T03:59:59.000Z"
   },
   "timepicker": {},
   "timezone": "",
-  "title": "SOSReport AAP Kubernetes Copy",
-  "uid": "fb490aa0-cf09-44d1-8a7f-bb81da076391",
-  "version": 5,
+  "title": "SOSReport AAP Kubernetes Copy Copy",
+  "uid": "ca48c81a-3d71-4360-a27d-6693b99e635c",
+  "version": 4,
   "weekStart": ""
 }
