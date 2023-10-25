@@ -169,7 +169,7 @@
       "type": "logs"
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "schemaVersion": 38,
   "style": "dark",
   "tags": [],
@@ -177,15 +177,38 @@
     "list": [
       {
         "current": {
-          "selected": true,
-          "text": [
-            "tower-1",
-            "tower-2"
-          ],
-          "value": [
-            "tower-1",
-            "tower-2"
-          ]
+          "selected": false,
+          "text": "4ca0ac2c450d10f1e04b82af7e30a6a1",
+          "value": "4ca0ac2c450d10f1e04b82af7e30a6a1"
+        },
+        "datasource": {
+          "type": "loki",
+          "uid": "P8E80F9AEF21F6940"
+        },
+        "definition": "",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "fingerprint",
+        "options": [],
+        "query": {
+          "label": "fingerprint",
+          "refId": "LokiVariableQueryEditor-VariableQuery",
+          "stream": "",
+          "type": 1
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "isNone": true,
+          "selected": false,
+          "text": "None",
+          "value": ""
         },
         "datasource": {
           "type": "loki",
@@ -200,7 +223,7 @@
         "query": {
           "label": "kubernetes_namespace_name",
           "refId": "LokiVariableQueryEditor-VariableQuery",
-          "stream": "{job=\"${job_name}\"}",
+          "stream": "{fingerprint=\"${fingerprint}\", job=\"${job_name}\"}",
           "type": 1
         },
         "refresh": 2,
@@ -211,19 +234,10 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": [
-            "tower-task-7556799794-75g7j",
-            "tower-task-7556799794-7sfck",
-            "tower-task-7556799794-9fgzf",
-            "tower-task-7556799794-k4dlc"
-          ],
-          "value": [
-            "tower-task-7556799794-75g7j",
-            "tower-task-7556799794-7sfck",
-            "tower-task-7556799794-9fgzf",
-            "tower-task-7556799794-k4dlc"
-          ]
+          "isNone": true,
+          "selected": false,
+          "text": "None",
+          "value": ""
         },
         "datasource": {
           "type": "loki",
@@ -238,7 +252,7 @@
         "query": {
           "label": "kubernetes_pod_name",
           "refId": "LokiVariableQueryEditor-VariableQuery",
-          "stream": "{job=\"${job_name}\", kubernetes_namespace_name=~\"^${namespace:pipe}$\"}",
+          "stream": "{fingerprint=\"${fingerprint}\", job=\"${job_name}\", kubernetes_namespace_name=~\"^${namespace:pipe}$\"}",
           "type": 1
         },
         "refresh": 1,
@@ -249,13 +263,10 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": [
-            "tower-task"
-          ],
-          "value": [
-            "tower-task"
-          ]
+          "isNone": true,
+          "selected": false,
+          "text": "None",
+          "value": ""
         },
         "datasource": {
           "type": "loki",
@@ -270,7 +281,7 @@
         "query": {
           "label": "kubernetes_container_name",
           "refId": "LokiVariableQueryEditor-VariableQuery",
-          "stream": "{job=\"pod-logs\",kubernetes_namespace_name=~\"^${namespace:pipe}$\", kubernetes_pod_name=~\"^${pod:pipe}$\"}",
+          "stream": "{fingerprint=\"${fingerprint}\", job=\"pod-logs\", kubernetes_namespace_name=~\"^${namespace:pipe}$\", kubernetes_pod_name=~\"^${pod:pipe}$\"}",
           "type": 1
         },
         "refresh": 1,
@@ -307,6 +318,6 @@
   "timezone": "",
   "title": "SOSReport AAP Kubernetes Copy",
   "uid": "fb490aa0-cf09-44d1-8a7f-bb81da076391",
-  "version": 16,
+  "version": 5,
   "weekStart": ""
 }

@@ -82,7 +82,8 @@ class SOSEvent():
         # TODO: read hostname from path/hostname
         template_vars = {
             'hostname': 'xxx',
-            'sosreport_dir': f'{self._root_abs_path}'
+            'sosreport_dir': f'{self._root_abs_path}',
+            'fingerprint': f'{self._fingerprint}',
         }
 
         content = template.render(

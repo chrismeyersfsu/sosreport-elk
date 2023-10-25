@@ -1,6 +1,7 @@
 - targets:
     - localhost
   labels:
+    fingerprint: {{ fingerprint }}
     job: nginx
     host: {{ hostname }}
     fname: access.log
@@ -17,6 +18,7 @@
 - targets:
     - localhost
   labels:
+    fingerprint: {{ fingerprint }}
     job: job_lifecycle
     host: {{ hostname }}
     fname: job_lifecycle.log
@@ -28,8 +30,9 @@
 - targets:
     - localhost
   labels:
+    fingerprint: {{ fingerprint }}
     job: pod-logs
     kubernetes_namespace_name:
     kubernetes_pod_name:
     kubernetes_container_name:
-    __path__: /{{ sosreport_dir }}/registry-redhat*/namespaces/*/pods/*/*/*/logs/*.log
+    __path__: {{ sosreport_dir }}/**/namespaces/*/pods/*/*/*/logs/*.log
