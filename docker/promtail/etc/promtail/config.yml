@@ -26,8 +26,13 @@ scrape_configs:
                 kubernetes_namespace_name:
                 kubernetes_pod_name:
                 kubernetes_container_name:
+
       - regex:
-          expression: '^(?P<time>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{9}Z) (?P<message>.*)$'
+          expression: '^(?P<time>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{9}Z) (?P<message>.*)$'
+      - replace:
+          expression: '^(?P<time>\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{9}Z) (?P<duplicate_time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2},\d{3}) (?P<message>.*)$'
+          source: 'duplicate_time'
+          replace: ''
       - timestamp:
           format: RFC3339Nano
           source: time
