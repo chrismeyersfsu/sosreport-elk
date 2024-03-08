@@ -37,6 +37,7 @@ services:
       - ${PWD}/promtail_configs:/promtail_configs
       - ${PWD}/app:/app
     command: /app/main.py
+    #command: /bin/bash -c "sleep 999999"
 
   grafana:
     environment:
