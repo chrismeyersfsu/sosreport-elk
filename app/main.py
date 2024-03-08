@@ -20,7 +20,29 @@ Assumptions:
       ^^ We should create a random subdir in the extract dir to drop the above assumption.
 """
 
-class SOSEvent():
+class SOSDataExtractor():
+    """
+    Pull data out of the sos snapshot to be used as meta-data for logs.
+    Try to only pull data from the RESULT of sos_commands .. why duplicate the work they already do.
+    """
+    def get_hostname(self):
+        path = self._extract_abs_path
+        subdir = None
+
+        for entry in os.listdir(path):
+            if os.path.isdir(os.path.join(path, entry)):
+                subdir = entry
+                break
+
+        if not subdir:
+            raise RuntimeError(f"Expected to find at least 1 subdir in {path} and did not")
+
+        path = os.path.join(path, subdir, 'sos_commands/host/hostname')
+        with open(path) as f:
+            return f.read().strip()
+
+
+class SOSEvent(SOSDataExtractor):
     SKIP_DIRS = ('proc', 'sys',)
     EXTRACT_BASE_DIR = SOSREPORT_EXTRACT_DIR
     PROMTAIL_CONFIG_BASE_DIR = PROMTAIL_CONFIG_DIR
@@ -81,7 +103,7 @@ class SOSEvent():
 
         # TODO: read hostname from path/hostname
         template_vars = {
-            'hostname': 'xxx',
+            'hostname': self.get_hostname(),
             'sosreport_dir': f'{self._root_abs_path}',
             'fingerprint': f'{self._fingerprint}',
         }
