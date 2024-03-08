@@ -5,7 +5,7 @@ networks:
 
 services:
   loki:
-    image: grafana/loki:2.8.6
+    image: grafana/loki:2.9.5
     ports:
       - "3100:3100"
     command: -config.file=/etc/loki/local-config.yaml
@@ -13,14 +13,17 @@ services:
       - loki
     volumes:
       - ${PWD}/docker/loki/etc/loki/local-config.yaml:/etc/loki/local-config.yaml
+      - ${PWD}/volumes/loki/index:/loki/index
+      - ${PWD}/volumes/loki/boltdb-cache:/loki/boltdb-cache
 
   promtail:
-    image: grafana/promtail:2.8.0
+    image: grafana/promtail:2.9.5
     volumes:
       - ${PWD}/docker/promtail/etc/promtail/config.yml:/etc/promtail/config.yml
       - ${PWD}/sosreports:/sosreports
       - ${PWD}/sosreports_extract:/sosreports_extract
       - ${PWD}/promtail_configs:/promtail_configs
+      - ${PWD}/volumes/promtail/position_data:/position_data
     command: -config.file=/etc/promtail/config.yml
     networks:
       - loki
