@@ -62,7 +62,7 @@ limits_config:
   ingestion_rate_strategy: local # Default: global
   max_global_streams_per_user: 100000000
   max_entries_limit_per_query: 100000000
-  max_query_series: 100000
+  max_query_series: 1000000
   max_query_parallelism: 32 # Old Default: 14
   max_streams_per_user: 100000000 # Old Default: 10000
 
