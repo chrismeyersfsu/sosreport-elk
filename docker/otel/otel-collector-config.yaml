@@ -1,0 +1,40 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+      http:
+
+exporters:
+  debug:
+    verbosity: detailed
+
+  loki:
+    endpoint: http://loki:3100/loki/api/v1/push
+    tls:
+      insecure: true
+    headers:
+      "X-Scope-OrgID": "1"
+    default_labels_enabled:
+      exporter: true
+      job: true
+      instance: true
+      level: true
+
+processors:
+  batch:
+
+extensions:
+  health_check:
+  zpages:
+    endpoint: ":55679"
+
+service:
+  pipelines:
+    logs:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug, loki]
+
+  extensions:
+    - health_check
+    - zpages

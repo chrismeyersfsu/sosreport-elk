@@ -6,7 +6,12 @@ import os
 import sys
 import pyinotify
 import hashlib
+import time
 
+from replay import OTELLogRecordReplayer
+
+
+LOG_DIR = '/logs2replay'
 
 SOSREPORT_ARCHIVE_DIR = '/sosreports'
 SOSREPORT_EXTRACT_DIR = '/sosreports_extract'
@@ -134,13 +139,58 @@ class SOSDetect():
                 self.process_default(event)
 
         wm = pyinotify.WatchManager()
-        notifier = pyinotify.Notifier(wm, EventHandler())
+        notifier = pyinotify.ThreadedNotifier(wm, EventHandler())
         mask = pyinotify.IN_CREATE # | pyinotify.IN_CLOSE_WRITE | pyinotify.ALL_EVENTS
         #wm.add_watch(watch_dir, pyinotify.IN_CLOSE_WRITE)
         wm.add_watch(watch_dir, mask)
-        notifier.loop()
+
+        return notifier
+
+
+class LogEvent(object):
+    def __init__(self, archive_abs_path):
+        self._log_file_abs_path = os.path.normpath(archive_abs_path)
+
+    def run(self):
+        verify = False
+        success, failed = OTELLogRecordReplayer(self._log_file_abs_path, 'http://otel:4318/v1/logs', verify=verify).run()
+        print(f"Event processed total={success+failed} success={success} fail={failed}")
+
+
+class LogDetect():
+    @classmethod
+    def run(cls, watch_dir=LOG_DIR):
+        class EventHandler(pyinotify.ProcessEvent):
+            def process_default(self, event):
+                print(f"Callback called {event}")
+                LogEvent(event.pathname).run()
+
+            def process_IN_CLOSE_WRITE(self, event):
+                self.process_default(event)
+
+        wm = pyinotify.WatchManager()
+        notifier = pyinotify.ThreadedNotifier(wm, EventHandler())
+        mask = pyinotify.IN_CREATE # | pyinotify.IN_CLOSE_WRITE | pyinotify.ALL_EVENTS
+        #wm.add_watch(watch_dir, pyinotify.IN_CLOSE_WRITE)
+        wm.add_watch(watch_dir, mask)
+
+        return notifier
 
 
 
-SOSDetect.run()
+sos_notifier = SOSDetect.run()
+log_notifier = LogDetect.run()
+
+sos_notifier.start()
+log_notifier.start()
+
+try:
+    while True:
+        time.sleep(1)
+except KeyboardInterrupt:
+    print("ACK CTRL+C pressed")
+finally:
+    sos_notifier.stop()
+    log_notifier.stop()
+
 #do_extract_sosreport('sosreport-awx1-2023-08-10-namgxyy.tar.xz')

@@ -13,8 +13,7 @@ services:
       - loki
     volumes:
       - ${PWD}/docker/loki/etc/loki/local-config.yaml:/etc/loki/local-config.yaml
-      - ${PWD}/volumes/loki/index:/loki/index
-      - ${PWD}/volumes/loki/boltdb-cache:/loki/boltdb-cache
+      - loki-volume:/loki
 
   promtail:
     image: grafana/promtail:2.9.5
@@ -23,12 +22,27 @@ services:
       - ${PWD}/sosreports:/sosreports
       - ${PWD}/sosreports_extract:/sosreports_extract
       - ${PWD}/promtail_configs:/promtail_configs
-      - ${PWD}/volumes/promtail/position_data:/position_data
+      - promtail-position:/position_data:rw
     command: -config.file=/etc/promtail/config.yml
     networks:
       - loki
     ports:
       - "9080:9080"
+
+  otel:
+    image: otel/opentelemetry-collector-contrib:0.88.0
+    volumes:
+      - ${PWD}/docker/otel/otel-collector-config.yaml:/etc/otel-collector-config.yaml
+      - ${PWD}/sosreports:/sosreports
+      - ${PWD}/sosreports_extract:/sosreports_extract
+    command: ["--config=/etc/otel-collector-config.yaml", ""]
+    networks:
+      - app
+      - loki
+    ports:
+      - "4317:4317"   # OTLP gRPC receiver
+      - "4318:4318"   # OTLP http receiver
+      - "55679:55679" # zpages http://localhost:55679/debug/servicez /tracez
 
   app:
     build:
@@ -37,10 +51,13 @@ services:
     volumes:
       - ${PWD}/sosreports:/sosreports
       - ${PWD}/sosreports_extract:/sosreports_extract
+      - ${PWD}/logs2replay:/logs2replay
       - ${PWD}/promtail_configs:/promtail_configs
       - ${PWD}/app:/app
     command: /app/main.py
     #command: /bin/bash -c "sleep 999999"
+    networks:
+      - app
 
   grafana:
     environment:
@@ -59,3 +76,13 @@ services:
       - ${PWD}/dashboards:/opt/grafana/dashboards
     networks:
       - loki
+
+networks:
+  loki:
+    name: loki
+  app:
+    name: app
+
+volumes:
+  loki-volume:
+  promtail-position:
