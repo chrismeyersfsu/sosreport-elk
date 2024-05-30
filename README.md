@@ -1,13 +1,13 @@
-Push SOSReport logs into an Loki running locally via docker-compose and query via Grafana.
-
-Current log files processed:
-* /var/log/nginx/access.log
+Given an SOSReport tar.gz, extract it, feed the logs into loki and view them in Grafana.
+Given an OTEL zstd compressed log from awx, replay it into loki and view it in Grafana.
 
 ### Quickstart
 
 ```
 docker-compose up
 cp <your_sos_report.tar.xv> ./sosreport/
+OR
+cp awx-logs.json.zstd ./logs2replay/
 ```
 * Load Grafana to see the results http://localhost:3001
 
