@@ -153,7 +153,7 @@ class LogEvent(object):
 
     def run(self):
         verify = False
-        success, failed = OTELLogRecordReplayer(self._log_file_abs_path, 'http://otel:4318/v1/logs', verify=verify).run()
+        success, failed = OTELLogRecordReplayer(self._log_file_abs_path, 'http://loki:3100/otlp/v1/logs', verify=verify).run()
         print(f"Event processed total={success+failed} success={success} fail={failed}")
 
 

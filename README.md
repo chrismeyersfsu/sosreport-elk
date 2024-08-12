@@ -4,12 +4,12 @@ Given an OTEL zstd compressed log from awx, replay it into loki and view it in G
 ### Quickstart
 
 ```
-docker-compose up
+docker compose up
 cp <your_sos_report.tar.xv> ./sosreport/
 OR
 cp awx-logs.json.zstd ./logs2replay/
 ```
-* Load Grafana to see the results http://localhost:3001
+* Load Grafana to see the results http://localhost:3002
 
 ### Importing Dashboards
 

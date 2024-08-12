@@ -11,7 +11,9 @@ logging.basicConfig()
 logger = logging.getLogger('tools.scripts.replay_log')
 logger.setLevel(logging.DEBUG)
 
-class OTLPFileProcessor:
+class OTLPCompressedFileProcessor:
+    # TODO: Prefer the non compressed path. This code will probably bitwrot now
+    # This code is NOT being called.
     def __init__(self, file):
         self.file = file
         self.byte_count = 0
@@ -38,6 +40,17 @@ class OTLPFileProcessor:
                     raise
 
 
+class OTLPFileProcessor:
+    def __init__(self, file):
+        self.file = file
+        self.byte_count = 0
+
+    def __iter__(self):
+        with open(self.file, 'rb') as f:
+            for line in f:
+                yield json.loads(line.strip())
+
+
 class OTELLogRecordReplayer:
     def __init__(self, file, url, verify=True):
         self._file = file
@@ -53,15 +66,13 @@ class OTELLogRecordReplayer:
 
         # TODO: add support for span and metrics replay + endpoints
 
-        # TODO: add support for grpc
-
         self._url = u.geturl()
 
     def send_logrecord(self, record):
         payload = json.dumps(record).encode('utf-8')
         res = requests.post(self._url, data=payload, headers=self._headers, verify=self._verify)
-        if res.status_code != 200:
-            logger.warning(f"Failed to POST log to endpoint {self._url} {res.content}")
+        if res.status_code != 204:
+            logger.warning(f"Failed to POST log to endpoint {res.status_code} - {self._url} {res.content}")
 
     def run(self):
         processor = OTLPFileProcessor(self._file)

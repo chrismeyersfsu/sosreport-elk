@@ -1,8 +1,8 @@
 all:
-	ansible-playbook main.yml
+	docker compose up
 
 test: FORCE
-	docker-compose -f docker-compose.yaml -f test/directory_watch_sosreport/docker-compose.yaml up
+	docker compose -f docker-compose.yaml -f test/directory_watch_sosreport/docker-compose.yaml up
 
 FORCE: ;
 

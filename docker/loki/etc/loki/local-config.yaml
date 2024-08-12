@@ -6,7 +6,7 @@ server:
   grpc_server_max_send_msg_size: 524288000 # 500 MB, might be too much, be careful
 
 frontend_worker:
-  match_max_concurrent: true
+  #match_max_concurrent: true
   grpc_client_config:
     max_send_msg_size: 524288000 # 500 MB
 
@@ -33,15 +33,15 @@ common:
 schema_config:
   configs:
     - from: 2020-10-24
-      store: boltdb-shipper
       object_store: filesystem
-      schema: v11
+      store: tsdb
+      schema: v13
       index:
         prefix: index_
         period: 24h
 
 storage_config:
-  boltdb_shipper:
+  tsdb_shipper:
     active_index_directory: /loki/index
     cache_location: /loki/boltdb-cache
 
@@ -49,6 +49,10 @@ ruler:
   alertmanager_url: http://localhost:9093
 
 limits_config:
+  # When logs are ingested by Loki using an OpenTelemetry protocol (OTLP) ingestion endpoint, some of the data is stored as Structured Metadata.
+  # You must set allow_structured_metadata to true within your Loki config file. Otherwise, Loki will reject the log payload as malformed.
+  # https://grafana.com/docs/loki/latest/send-data/otel/#loki-configuration
+  allow_structured_metadata: true
   retention_period: 3y
   # cmeyers: The default of 30m triggers a loop of queries that take a long time
   # to complete and the UI times out
@@ -80,7 +84,7 @@ query_scheduler:
 
 query_range:
   parallelise_shardable_queries: false
-  split_queries_by_interval: 0
+  #split_queries_by_interval: 0
 
 # By default, Loki will send anonymous, but uniquely-identifiable usage and configuration
 # analytics to Grafana Labs. These statistics are sent to https://stats.grafana.org/
